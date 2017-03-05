@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:layout_margin="6dp"
+    android:layout_marginBottom="20dp"
+    android:layout_marginTop="10dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:text="this is a test"
+        android:textColor="#ffffff"
+        android:id="@+id/title_text" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_below="@id/title_text"
+        android:layout_height="wrap_content"
+        android:src="@drawable/kaink"
+        />
+
+
+
+
+
+</RelativeLayout>
