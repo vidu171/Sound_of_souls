@@ -4,19 +4,19 @@ package com.example.ashura.soundofsoul;
  * Created by vidu on 26/2/17.
  */
 
-public class view {
+public class poem_class {
 
     String title_view = new String();
     String poem_title = new String();
     String poem_autor = new String();
     String poem_lines = new String();
+    int poem_id;
 
-    public view (String Title){
-
-        title_view = Title;
+    public poem_class (String author){
+        poem_autor = author;
     }
 
-    public view (String title , String authour , String lines){
+    public poem_class (String title , String authour , String lines){
 
         poem_title = title;
         poem_autor = authour;
@@ -24,6 +24,12 @@ public class view {
 
 
     }
+    public  poem_class (String title , String author  , int id){
+        poem_title=title;
+        poem_autor=author;
+        poem_id=id;
+    }
+
 
     public String getTitle_view(){
         return title_view;

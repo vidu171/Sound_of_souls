@@ -3,28 +3,42 @@
     package="com.example.ashura.soundofsoul">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission  android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="25"/>
 
     <application
         android:allowBackup="true"
         android:label="@string/app_name"
         android:icon="@drawable/iconeee"
         android:supportsRtl="true"
+        android:hardwareAccelerated="false"
+        android:largeHeap="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Poem_activity"
             android:label="Poems"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme"/>
         <activity android:name=".Poemactivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme"/>
+        <activity android:name=".poem_page"/>
+        <activity android:name=".authors"/>
+        <activity android:name=".author_titles"/>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider
+            android:authorities="com.example.ashura.soundofsoul"
+            android:name=".data.poem_provider"
+            android:exported="false"
+            />
     </application>
 
 </manifest>

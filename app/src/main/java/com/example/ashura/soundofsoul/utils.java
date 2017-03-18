@@ -10,9 +10,9 @@ import java.util.Random;
  */
 
 public class utils {
-    public static ArrayList<view> deivedArray ;
+    public static ArrayList<poem_class> deivedArray ;
 
-    public static ArrayList<view> arrydivider (ArrayList<view> completearray ){
+    public static ArrayList<poem_class> arrydivider (ArrayList<poem_class> completearray ){
 
         Random rand = new Random();
 

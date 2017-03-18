@@ -21,7 +21,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/poem_title_layout" />
+    <include layout="@layout/poem_title_layout"/>
 
 
 </android.support.design.widget.CoordinatorLayout>
