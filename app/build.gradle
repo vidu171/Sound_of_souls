@@ -33,7 +33,7 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.0'
     compile 'com.android.support:design:25.3.0'
-    compile 'com.lapism:searchview:4.0'
+    compile 'com.miguelcatalan:materialsearchview:1.4.0'
     testCompile 'junit:junit:4.12'
 
 
@@ -41,4 +41,5 @@ dependencies {
 
 
 
-   }
+    compile 'com.google.android.gms:play-services-ads:10.2.0'
+}

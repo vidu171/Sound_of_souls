@@ -8,12 +8,16 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,18 +40,26 @@ import java.util.List;
 public class authors extends AppCompatActivity {
 
     public title_adapter madapter;
-
+     ListView list;
+    ArrayList<poem_class> orignalarray = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.poem_activity);
 
+
         task thistask = new task();
         thistask.execute();
-        ArrayList<poem_class> authors = new ArrayList<>();
-        ListView list  = (ListView) findViewById(R.id.list_item);
+        final ArrayList<poem_class> authors = new ArrayList<>();
+        orignalarray=authors;
+        list  = (ListView) findViewById(R.id.list_item);
         madapter = new title_adapter(this,authors);
          list.setAdapter(madapter);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("AUTHORS");
+
 
 //        list.setOnClickListener(new AdapterView.OnItemClickListener(){
 //
@@ -62,6 +74,33 @@ public class authors extends AppCompatActivity {
 //                startActivity(intent);
 //            }
 //        });
+
+        MaterialSearchView searchView = (MaterialSearchView) findViewById(R.id.search_view);
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                newText=newText.toLowerCase();
+
+                ArrayList<poem_class> authors_array = new ArrayList<poem_class>();
+                for(int i=0;i<authors.size();i++){
+
+                    if(authors.get(i).poem_title.toLowerCase().contains(newText)){
+                        authors_array.add(authors.get(i));
+                    }
+                }
+
+                madapter = new title_adapter(authors.this,authors_array);
+                list.setAdapter(madapter);
+
+                return false;
+            }
+        });
+
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -89,6 +128,35 @@ public class authors extends AppCompatActivity {
 
     }
 
+
+    public void onBackPressed(){
+
+        MaterialSearchView searchView = (MaterialSearchView) findViewById(R.id.search_view);
+        if (searchView.isSearchOpen()) {
+            madapter = new title_adapter(authors.this ,orignalarray);
+            list.setAdapter(madapter);
+            searchView.closeSearch();
+        } else {
+            super.onBackPressed();
+        }
+
+    }
+
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.action_search, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        MaterialSearchView searchView = (MaterialSearchView) findViewById(R.id.search_view);
+        searchView.setMenuItem(item);
+
+//        SearchView searchView = (SearchView) item.getActionView();
+//        searchView.setQueryHint("Type something...");
+        return true;
+    }
+
+
+
     private class task extends AsyncTask<URL, Void, List<poem_class>> {
 
         private ProgressDialog progressDialog;
@@ -96,7 +164,7 @@ public class authors extends AppCompatActivity {
         @Override
         public List<poem_class> doInBackground(URL... urls) {
 
-            InputStream input = getResources().openRawResource(R.raw.author);
+            InputStream input = getResources().openRawResource(R.raw.authori);
 
             InputStreamReader reader = new InputStreamReader(input, Charset.forName("UTF-8"));
 
@@ -124,7 +192,7 @@ public class authors extends AppCompatActivity {
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject root = array.getJSONObject(i);
                     // String title = root.getString("title");
-                    String author = root.getString("poem_autor");
+                    String author = root.getString("author");
                     //  int poem_id = root.getInt("id");
                     thispoem = new poem_class(author,"x","x");
                     json.add(thispoem);

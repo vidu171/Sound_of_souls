@@ -22,8 +22,8 @@
     android:layout_marginTop="4dp"
     android:layout_marginBottom="5dp"
     tools:context="com.example.ashura.soundofsoul.Poem_activity"
-    android:divider="@drawable/kaink"
-    android:dividerHeight="10.0sp"
+    android:divider="@color/colorAccent"
+    android:dividerHeight="1dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/app_bar_poem"></ListView>
     </RelativeLayout>

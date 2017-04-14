@@ -1,5 +1,6 @@
 package com.example.ashura.soundofsoul;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,6 +22,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -28,11 +30,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.ashura.soundofsoul.data.poem_contract;
 import com.example.ashura.soundofsoul.data.poem_provider;
 import com.example.ashura.soundofsoul.data.poemdbhelper;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,7 +63,9 @@ public class Poem_activity extends AppCompatActivity {
      public static final String LOG_TAG = MainActivity.class.getName();
         public static String POEM_TITLE = "http://poetrydb.org/title";
 
-
+ArrayList<poem_class> orignalarray = new ArrayList<>();
+    ArrayList<poem_class> devidedarray = new ArrayList<>();
+     ListView poem_Title_list;
 
 
 
@@ -67,7 +76,13 @@ public class Poem_activity extends AppCompatActivity {
              @Override
                  protected void onCreate(Bundle savedInstanceState) {
                              super.onCreate(savedInstanceState);
-                              setContentView(R.layout.poem_activity);
+                              setContentView(R.layout.poem_title_layout);
+
+
+                 Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+                 setSupportActionBar(toolbar);
+                 getSupportActionBar().setTitle("POEMS");
+                 final MaterialSearchView searchView = (MaterialSearchView) findViewById(R.id.search_view);
 
 
 
@@ -76,21 +91,23 @@ public class Poem_activity extends AppCompatActivity {
                             task.execute(url);
 
 
-                             ArrayList<poem_class > arr = new ArrayList<poem_class>();
-
-
-
-                                final ListView poem_Title_list = (ListView) findViewById(R.id.list_item);
+                             final ArrayList<poem_class > arr = new ArrayList<poem_class>();
+                       poem_Title_list = (ListView) findViewById(R.id.list_item);
                                  //Log.w("main   ", arr.get(2).poem_title);
-                                madapter = new title_adapter(this ,arr);
-                                  poem_Title_list.setAdapter(madapter);
-               //  getSupportLoaderManager().initLoader(1, null, this).forceLoad();
 
-                                poem_Title_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            orignalarray = arr;
+
+                 madapter = new title_adapter(this ,arr);
+                 poem_Title_list.setAdapter(madapter);
+
+
+
+
+               //  getSupportLoaderManager().initLoader(1, null, this).forceLoad();
+                  poem_Title_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                         poem_class current_poem = madapter.getItem(i);
-
+                                         final poem_class current_poem = madapter.getItem(i);
 
                                         String title_to_intent=current_poem.poem_title;
                                         String author_to_intent= current_poem.poem_autor;
@@ -111,21 +128,48 @@ public class Poem_activity extends AppCompatActivity {
                                 }
                             });
 
+                 searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+                     @Override
+                     public boolean onQueryTextSubmit(String query) {
+                         return false;
+                     }
+
+                     @Override
+                     public boolean onQueryTextChange(String newText) {
+                         newText=newText.toLowerCase();
+                         if(newText!=null && !newText.isEmpty()) {
+                             ArrayList<poem_class> poem_list = new ArrayList<poem_class>();
+                             for(int i =0;i<arr.size();i++){
+                                 if(arr.get(i).poem_autor.toLowerCase().contains(newText) || arr.get(i).poem_title.toLowerCase().contains(newText)){
+
+                                     poem_list.add(arr.get(i));
+                                  }
+                                 madapter = new title_adapter(Poem_activity.this ,poem_list);
+                                 poem_Title_list.setAdapter(madapter);
+
+
+                             }
+
+                         }
+
+                         return false;
+                     }
+                 });
+
 
     }
 
+    public void onBackPressed() {
+        MaterialSearchView searchView = (MaterialSearchView) findViewById(R.id.search_view);
+        if (searchView.isSearchOpen()) {
+            madapter = new title_adapter(Poem_activity.this ,orignalarray);
+            poem_Title_list.setAdapter(madapter);
+            searchView.closeSearch();
+        } else {
+            super.onBackPressed();
+        }
+    }
 
-
-
-//    @Override
-//    public void onBackPressed() {
-//                                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//                                if (drawer.isDrawerOpen(GravityCompat.START)) {
-//                                    drawer.closeDrawer(GravityCompat.START);
-//                                } else {
-//                                    super.onBackPressed();
-//                                }
-//    }
 
 
 
@@ -135,60 +179,15 @@ public class Poem_activity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
                                         // Inflate the menu; this adds items to the action bar if it is present.
-                                        getMenuInflater().inflate(R.menu.main, menu);
+
+
+                                        getMenuInflater().inflate(R.menu.action_search, menu);
+                                        MenuItem item = menu.findItem(R.id.action_search);
+        MaterialSearchView searchView = (MaterialSearchView) findViewById(R.id.search_view);
+        searchView.setMenuItem(item);
+
                                         return true;
     }
-
-
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-                            // Handle action bar item clicks here. The action bar will
-                            // automatically handle clicks on the Home/Up button, so long
-                            // as you specify a parent activity in AndroidManifest.xml.
-                            int id = item.getItemId();
-
-                            //noinspection SimplifiableIfStatement
-                            if (id == R.id.action_settings) {
-                                return true;
-                            }
-
-                            return super.onOptionsItemSelected(item);
-    }
-
-
-
-
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    //@Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-                    // Handle navigation view item clicks here.
-                    int id = item.getItemId();
-
-                    if (id == R.id.nav_camera) {
-                        // Handle the camera action
-                        //Intent i = new Intent(MainActivity.this, Poem_activity.class);
-                      //  startActivity(i);
-
-                    } else if (id == R.id.nav_gallery) {
-
-                    } else if (id == R.id.nav_slideshow) {
-
-                    } else if (id == R.id.nav_manage) {
-
-                    } else if (id == R.id.nav_share) {
-
-                    } else if (id == R.id.nav_send) {
-
-                    }
-
-                    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                    drawer.closeDrawer(GravityCompat.START);
-                    return true;
-    }
-
 
 
 
@@ -223,6 +222,9 @@ public class Poem_activity extends AppCompatActivity {
                 try {
 
                     array = new JSONArray(output.toString());
+
+
+
                     for(int i =0;i<array.length();i++){
                         JSONObject root  = array.getJSONObject(i);
                         String title = root.getString("title");
@@ -246,19 +248,7 @@ public class Poem_activity extends AppCompatActivity {
 
                 }
 
-
-
-
-
-
-
-
-
                 return json;
-
-
-
-
             }
 
                     @Override
@@ -291,13 +281,11 @@ public class Poem_activity extends AppCompatActivity {
 
     }
 
-    private  boolean haveconnection(){
-                    ConnectivityManager connectivityManager = (ConnectivityManager) Poem_activity.this
-                            .getSystemService(Context.CONNECTIVITY_SERVICE);
-                    NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-                    return networkInfo!= null && networkInfo.isConnected();
 
 
-    }
+
+
+
+
 
 }

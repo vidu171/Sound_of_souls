@@ -6,4 +6,6 @@
         <color name="blackblue">#0b0e0f</color>
     <color name="colorBackground">#001521</color>
     <color name="bluetac">#FF0099cc</color>
+    <color name="white">#ffffff</color>
+    <color name="primary_material_light_1">#5a87a1</color>
 </resources>

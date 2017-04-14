@@ -5,11 +5,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+tools:context=".Poem_activity"
     android:orientation="vertical">
-    <com.lapism.searchview.SearchView
-        android:id="@+id/searchView"
+
+    <FrameLayout
+        android:id="@+id/toolbar_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/blackblue" />
+
+        <com.miguelcatalan.materialsearchview.MaterialSearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            />
+    </FrameLayout>
+
 <ListView
     android:id="@+id/list_item"
     android:layout_width="match_parent"
@@ -18,8 +38,13 @@
     android:layout_marginTop="4dp"
     android:layout_marginBottom="5dp"
     tools:context="com.example.ashura.soundofsoul.Poem_activity"
-    android:divider="@drawable/kaink"
-    android:dividerHeight="10.0sp"
+    android:divider="@color/colorAccent"
+    android:dividerHeight="1dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/app_bar_poem"/>
-    </LinearLayout>
+    />
+
+
+
+
+
+</LinearLayout>

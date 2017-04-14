@@ -10,7 +10,10 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ashura.soundofsoul.data.poem_contract;
@@ -46,7 +49,7 @@ public class poem_page extends AppCompatActivity {
 //        task thistask = new task();
 //        thistask.execute();
 
-        TextView by_title = (TextView) findViewById(R.id.textView2);
+        ImageView by_title = (ImageView) findViewById(R.id.textView2);
         by_title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,8 +57,15 @@ public class poem_page extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        TextView by_author = (TextView) findViewById(R.id.textView);
+        ImageView fav = (ImageView) findViewById(R.id.textView3);
+        fav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(poem_page.this,favourite_page.class);
+                startActivity(i);
+            }
+        });
+        ImageView by_author = (ImageView) findViewById(R.id.textView);
         by_author.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,6 +84,40 @@ public class poem_page extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.poem_menu,menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if(id==R.id.report_problem){
+            Intent i = new Intent();
+            i.setAction(Intent.ACTION_SEND);
+            i.setType("text/html");
+            i.putExtra(Intent.EXTRA_EMAIL,"illumy.inc@gmail.com");
+            startActivity(Intent.createChooser(i,"Send Email"));
+
+        }
+        else if(id==R.id.menu_nav_share){
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Sound of Soul");
+
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "http://play.google.com/store/apps/details?id=" + getBaseContext().getPackageName());
+            startActivity(Intent.createChooser(sharingIntent, "Share via"));
+
+
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
 
     public class task extends AsyncTask<Void,Void,Void>{
 

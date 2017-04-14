@@ -14,9 +14,9 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srcCompat="@drawable/bluequote"
+        android:paddingTop="0dp"
         android:scaleType="centerCrop"
-        android:paddingTop="100dp"/>
+        app:srcCompat="@drawable/bluequote" />
 
 
 </LinearLayout>
